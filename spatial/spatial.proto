@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+service Server {
+	rpc PointInPolygon (PointInPolygonRequest) returns (StandardPlacesResponse) {}
+}
+
+message PointInPolygonRequest {
+	float latitude = 1;
+	float longitude = 2;
+}
+
+message StandardPlacesResponse {
+	int64 wofid = 1;
+}
