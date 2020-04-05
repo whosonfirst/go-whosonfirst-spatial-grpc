@@ -47,7 +47,7 @@ func main() {
 	log.Println(len(stream.Results))
 
 	for _, r := range stream.Results {
-		log.Println(r)
+		log.Println(r, r.Id, r.ParentId)
 	}
 
 }

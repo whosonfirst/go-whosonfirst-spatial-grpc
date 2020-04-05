@@ -5,9 +5,9 @@ import (
 	geojson_utils "github.com/whosonfirst/go-whosonfirst-geojson-v2/utils"
 	"github.com/whosonfirst/go-whosonfirst-spatial-grpc/spatial"
 	"github.com/whosonfirst/go-whosonfirst-spatial/app"
+	"github.com/whosonfirst/go-whosonfirst-spatial/filter"
+	"log"
 )
-
-const COORD_FACTOR float64 = 1e7
 
 type SpatialServer struct {
 	app *app.SpatialApplication
@@ -26,8 +26,8 @@ func (s *SpatialServer) PointInPolygon(ctx context.Context, req *spatial.Coordin
 
 	spatial_db := s.app.SpatialDatabase
 
-	lat := float64(req.Latitude) // COORD_FACTOR
-	lon := float64(req.Latitude) // COORD_FACTOR
+	lat := float64(req.Latitude)
+	lon := float64(req.Longitude)
 
 	coord, err := geojson_utils.NewCoordinateFromLatLons(lat, lon)
 
@@ -35,7 +35,13 @@ func (s *SpatialServer) PointInPolygon(ctx context.Context, req *spatial.Coordin
 		return nil, err
 	}
 
-	rsp, err := spatial_db.PointInPolygon(ctx, &coord, nil)
+	f, err := filter.NewSPRFilter()
+
+	if err != nil {
+		return nil, err
+	}
+
+	rsp, err := spatial_db.PointInPolygon(ctx, &coord, f)
 
 	if err != nil {
 		return nil, err
@@ -43,6 +49,8 @@ func (s *SpatialServer) PointInPolygon(ctx context.Context, req *spatial.Coordin
 
 	results := rsp.Results()
 	count := len(results)
+
+	log.Println("COUNT", count, lat, lon)
 
 	grpc_results := make([]*spatial.StandardPlaceResponse, count)
 
