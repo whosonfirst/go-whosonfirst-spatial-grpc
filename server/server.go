@@ -6,6 +6,7 @@ import (
 	"github.com/whosonfirst/go-whosonfirst-spatial-grpc/spatial"
 	"github.com/whosonfirst/go-whosonfirst-spatial/app"
 	"github.com/whosonfirst/go-whosonfirst-spatial/filter"
+	"github.com/whosonfirst/go-whosonfirst-spr"
 	"log"
 )
 
@@ -70,7 +71,7 @@ func (s *SpatialServer) PointInPolygon(ctx context.Context, req *spatial.Coordin
 	return grpc_rsp, nil
 }
 
-func (s *SpatialServer) PointInPolygonStream(ctx context.Context, req *spatial.Coordinate, stream *spatial.StandardPlaceResponse) error {
+func (s *SpatialServer) PointInPolygonStream(req *spatial.Coordinate, stream spatial.Spatial_PointInPolygonStreamServer) error {
 
 	spatial_db := s.app.SpatialDatabase
 
@@ -89,26 +90,45 @@ func (s *SpatialServer) PointInPolygonStream(ctx context.Context, req *spatial.C
 		return err
 	}
 
-	// UPDATE TO USE CHANNELS
+	ctx := context.Background()
 
-	rsp, err := spatial_db.PointInPolygon(ctx, &coord, f)
+	ctx, cancel := context.WithCancel(ctx)
+	defer cancel()
 
-	if err != nil {
-		return err
-	}
+	rsp_ch := make(chan spr.StandardPlacesResult)
+	err_ch := make(chan error)
+	done_ch := make(chan bool)
 
-	results := rsp.Results()
+	working := true
 
-	for _, spr_result := range results {
+	go spatial_db.PointInPolygonWithChannels(ctx, &coord, f, rsp_ch, err_ch, done_ch)
 
-		grpc_result := &spatial.StandardPlaceResponse{
-			Id: spr_result.Id(),
+	for {
+		select {
+		case <-ctx.Done():
+			return nil
+		case <-done_ch:
+			working = false
+		case spr_result := <-rsp_ch:
+
+			grpc_result := &spatial.StandardPlaceResponse{
+				Id: spr_result.Id(),
+			}
+
+			err := stream.SendMsg(grpc_result)
+
+			if err != nil {
+				return err
+			}
+
+		case err := <-err_ch:
+			return err
+		default:
+			// pass
 		}
 
-		err := stream.Send(grpc_result)
-
-		if err != nil {
-			return err
+		if !working {
+			break
 		}
 	}
 
