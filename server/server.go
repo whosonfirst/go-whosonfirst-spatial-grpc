@@ -7,6 +7,8 @@ import (
 	"github.com/whosonfirst/go-whosonfirst-spatial/app"
 )
 
+const COORD_FACTOR float64 = 1e7
+
 type SpatialServer struct {
 	app *app.SpatialApplication
 }
@@ -20,14 +22,12 @@ func NewSpatialServer(app *app.SpatialApplication) (*SpatialServer, error) {
 	return s, nil
 }
 
-func (s *SpatialServer) PointInPolygon(ctx context.Context, req *spatial.PointInPolygonRequest) (*spatial.StandardPlacesResponse, error) {
+func (s *SpatialServer) PointInPolygon(ctx context.Context, req *spatial.Coordinate) (*spatial.StandardPlacesResults, error) {
 
 	spatial_db := s.app.SpatialDatabase
 
-	const CordFactor float64 = 1e7
-
-	lat := float64(req.Latitude) / CordFactor
-	lon := float64(req.Latitude) / CordFactor
+	lat := float64(req.Latitude) // COORD_FACTOR
+	lon := float64(req.Latitude) // COORD_FACTOR
 
 	coord, err := geojson_utils.NewCoordinateFromLatLons(lat, lon)
 
@@ -35,15 +35,29 @@ func (s *SpatialServer) PointInPolygon(ctx context.Context, req *spatial.PointIn
 		return nil, err
 	}
 
-	_, err = spatial_db.PointInPolygon(ctx, &coord, nil)
+	rsp, err := spatial_db.PointInPolygon(ctx, &coord, nil)
 
 	if err != nil {
 		return nil, err
 	}
 
-	rsp := &spatial.StandardPlacesResponse{
-		Wofid: 1234,
+	results := rsp.Results()
+	count := len(results)
+
+	grpc_results := make([]*spatial.StandardPlaceResponse, count)
+
+	for idx, spr_result := range results {
+
+		grpc_result := &spatial.StandardPlaceResponse{
+			Id: spr_result.Id(),
+		}
+
+		grpc_results[idx] = grpc_result
 	}
 
-	return rsp, nil
+	grpc_rsp := &spatial.StandardPlacesResults{
+		Results: grpc_results,
+	}
+
+	return grpc_rsp, nil
 }

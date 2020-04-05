@@ -52,7 +52,7 @@ func main() {
 
 	grpc_server := grpc.NewServer()
 
-	spatial.RegisterServerServer(grpc_server, spatial_server)
+	spatial.RegisterSpatialServer(grpc_server, spatial_server)
 
 	addr := fmt.Sprintf("localhost:%d", 8282) // FLAGS, PLEASE
 	lis, err := net.Listen("tcp", addr)

@@ -1,6 +1,6 @@
 # go-whosonfirst-spatial-grpc
 
-Work in progress.
+Work in progress. Everything will change.
 
 ## See also
 

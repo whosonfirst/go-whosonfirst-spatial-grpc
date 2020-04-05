@@ -29,9 +29,9 @@ func main() {
 
 	defer conn.Close()
 
-	client := spatial.NewServerClient(conn)
+	client := spatial.NewSpatialClient(conn)
 
-	req := &spatial.PointInPolygonRequest{
+	req := &spatial.Coordinate{
 		Latitude:  lat,
 		Longitude: lon,
 	}
@@ -44,5 +44,10 @@ func main() {
 		log.Fatal(err)
 	}
 
-	log.Println(stream)
+	log.Println(len(stream.Results))
+
+	for _, r := range stream.Results {
+		log.Println(r)
+	}
+
 }
