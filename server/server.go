@@ -69,3 +69,48 @@ func (s *SpatialServer) PointInPolygon(ctx context.Context, req *spatial.Coordin
 
 	return grpc_rsp, nil
 }
+
+func (s *SpatialServer) PointInPolygonStream(ctx context.Context, req *spatial.Coordinate, stream *spatial.StandardPlaceResponse) error {
+
+	spatial_db := s.app.SpatialDatabase
+
+	lat := float64(req.Latitude)
+	lon := float64(req.Longitude)
+
+	coord, err := geojson_utils.NewCoordinateFromLatLons(lat, lon)
+
+	if err != nil {
+		return err
+	}
+
+	f, err := filter.NewSPRFilter()
+
+	if err != nil {
+		return err
+	}
+
+	// UPDATE TO USE CHANNELS
+
+	rsp, err := spatial_db.PointInPolygon(ctx, &coord, f)
+
+	if err != nil {
+		return err
+	}
+
+	results := rsp.Results()
+
+	for _, spr_result := range results {
+
+		grpc_result := &spatial.StandardPlaceResponse{
+			Id: spr_result.Id(),
+		}
+
+		err := stream.Send(grpc_result)
+
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}

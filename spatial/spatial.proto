@@ -4,6 +4,7 @@ syntax = "proto3";
 
 service Spatial {
 	rpc PointInPolygon (Coordinate) returns (StandardPlacesResults) {}
+	rpc PointInPolygonStream (Coordinate) returns (stream StandardPlaceResponse) {}	
 }
 
 message Coordinate {
