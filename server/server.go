@@ -23,7 +23,7 @@ func NewSpatialServer(app *app.SpatialApplication) (*SpatialServer, error) {
 	return s, nil
 }
 
-func (s *SpatialServer) PointInPolygon(ctx context.Context, req *spatial.Coordinate) (*spatial.StandardPlacesResults, error) {
+func (s *SpatialServer) PointInPolygon(ctx context.Context, req *spatial.PointInPolygonRequest) (*spatial.StandardPlacesResults, error) {
 
 	spatial_db := s.app.SpatialDatabase
 

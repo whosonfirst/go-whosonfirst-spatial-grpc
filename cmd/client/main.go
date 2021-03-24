@@ -7,6 +7,7 @@ import (
 	"github.com/sfomuseum/go-flags/lookup"
 	grpc_flags "github.com/whosonfirst/go-whosonfirst-spatial-grpc/flags"
 	"github.com/whosonfirst/go-whosonfirst-spatial-grpc/spatial"
+	"github.com/whosonfirst/go-whosonfirst-spatial-pip"
 	spatial_flags "github.com/whosonfirst/go-whosonfirst-spatial/flags"
 	"google.golang.org/grpc"
 	"log"
@@ -44,14 +45,14 @@ func main() {
 		log.Fatal(err)
 	}
 
+	req, err := spatial.NewPointInPolygonRequestFromFlagSet(fs)
+
+	if err != nil {
+		log.Fatalf("Failed to create PIP request, %v", err)
+	}
+
 	host, _ := lookup.StringVar(fs, grpc_flags.HOST)
 	port, _ := lookup.IntVar(fs, grpc_flags.PORT)
-
-	lat, _ := lookup.Float64Var(fs, spatial_flags.LATITUDE)
-	lon, _ := lookup.Float64Var(fs, spatial_flags.LONGITUDE)
-
-	lat32 := float32(lat)
-	lon32 := float32(lon)
 
 	var opts []grpc.DialOption
 	opts = append(opts, grpc.WithInsecure())
@@ -67,11 +68,6 @@ func main() {
 	defer conn.Close()
 
 	client := spatial.NewSpatialClient(conn)
-
-	req := &spatial.Coordinate{
-		Latitude:  lat32,
-		Longitude: lon32,
-	}
 
 	stream, err := client.PointInPolygon(ctx, req)
 
