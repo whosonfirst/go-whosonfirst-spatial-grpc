@@ -101,7 +101,7 @@ func (s *SpatialServer) PointInPolygonStream(req *spatial.Coordinate, stream spa
 
 	working := true
 
-	go spatial_db.PointInPolygonWithChannels(ctx, &coord, f, rsp_ch, err_ch, done_ch)
+	go spatial_db.PointInPolygonWithChannels(ctx, rsp_ch, err_ch, done_ch, &coord, f)
 
 	for {
 		select {

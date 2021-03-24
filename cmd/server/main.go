@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"github.com/sfomuseum/go-flags/flagset"
 	"github.com/whosonfirst/go-whosonfirst-spatial-grpc/server"
 	"github.com/whosonfirst/go-whosonfirst-spatial-grpc/spatial"
 	"github.com/whosonfirst/go-whosonfirst-spatial/app"
@@ -20,7 +21,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	flags.Parse(fs)
+	flagset.Parse(fs)
 
 	ctx := context.Background()
 
