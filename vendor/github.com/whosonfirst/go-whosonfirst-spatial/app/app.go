@@ -3,7 +3,8 @@ package app
 import (
 	"context"
 	"flag"
-	"github.com/whosonfirst/go-whosonfirst-index"
+	"fmt"
+	"github.com/whosonfirst/go-whosonfirst-iterate/iterator"
 	"github.com/whosonfirst/go-whosonfirst-log"
 	"github.com/whosonfirst/go-whosonfirst-spatial/database"
 	"github.com/whosonfirst/go-whosonfirst-spatial/properties"
@@ -15,7 +16,7 @@ type SpatialApplication struct {
 	mode             string
 	SpatialDatabase  database.SpatialDatabase
 	PropertiesReader properties.PropertiesReader
-	Walker           *index.Indexer
+	Iterator         *iterator.Iterator
 	Logger           *log.WOFLogger
 }
 
@@ -30,31 +31,31 @@ func NewSpatialApplicationWithFlagSet(ctx context.Context, fl *flag.FlagSet) (*S
 	spatial_db, err := NewSpatialDatabaseWithFlagSet(ctx, fl)
 
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("Failed instantiate spatial database, %v", err)
 	}
 
 	properties_r, err := NewPropertiesReaderWithFlagSet(ctx, fl)
 
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("Failed to instantiate properties reader, %v", err)
 	}
 
-	walker, err := NewWalkerWithFlagSet(ctx, fl, spatial_db, properties_r)
+	iter, err := NewIteratorWithFlagSet(ctx, fl, spatial_db, properties_r)
 
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("Failed to instantiate iterator, %v", err)
 	}
 
 	err = AppendCustomPlacetypesWithFlagSet(ctx, fl)
 
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("Failed to append custom placetypes, %v", err)
 	}
 
 	sp := SpatialApplication{
 		SpatialDatabase:  spatial_db,
 		PropertiesReader: properties_r,
-		Walker:           walker,
+		Iterator:         iter,
 		Logger:           logger,
 	}
 
@@ -63,7 +64,7 @@ func NewSpatialApplicationWithFlagSet(ctx context.Context, fl *flag.FlagSet) (*S
 
 func (p *SpatialApplication) Close(ctx context.Context) error {
 
-	p.SpatialDatabase.Close(ctx)
+	p.SpatialDatabase.Disconnect(ctx)
 
 	if p.PropertiesReader != nil {
 		p.PropertiesReader.Close(ctx)
@@ -74,58 +75,40 @@ func (p *SpatialApplication) Close(ctx context.Context) error {
 
 func (p *SpatialApplication) IndexPaths(ctx context.Context, paths ...string) error {
 
-	if p.mode != "spatialite" {
+	go func() {
 
-		go func() {
+		// TO DO: put this somewhere so that it can be triggered by signal(s)
+		// to reindex everything in bulk or incrementally
 
-			// TO DO: put this somewhere so that it can be triggered by signal(s)
-			// to reindex everything in bulk or incrementally
+		t1 := time.Now()
 
-			t1 := time.Now()
+		err := p.Iterator.IterateURIs(ctx, paths...)
 
-			err := p.Walker.IndexPaths(paths)
+		if err != nil {
+			p.Logger.Fatal("failed to index paths because %s", err)
+		}
 
-			if err != nil {
-				p.Logger.Fatal("failed to index paths because %s", err)
-			}
+		t2 := time.Since(t1)
 
-			t2 := time.Since(t1)
+		p.Logger.Status("finished indexing in %v", t2)
+		debug.FreeOSMemory()
+	}()
 
-			p.Logger.Status("finished indexing in %v", t2)
-			debug.FreeOSMemory()
-		}()
-
-		// set up some basic monitoring and feedback stuff
-
-		go func() {
-
-			c := time.Tick(1 * time.Second)
-
-			for _ = range c {
-
-				if !p.Walker.IsIndexing() {
-					continue
-				}
-
-				p.Logger.Status("indexing %d records indexed", p.Walker.Indexed)
-			}
-		}()
-	}
-
-	return nil
-}
-
-/*
+	// set up some basic monitoring and feedback stuff
 
 	go func() {
 
-		tick := time.Tick(1 * time.Minute)
+		c := time.Tick(1 * time.Second)
 
-		for _ = range tick {
-			var ms runtime.MemStats
-			runtime.ReadMemStats(&ms)
-			pip.Logger.Status("memstats system: %8d inuse: %8d released: %8d objects: %6d", ms.HeapSys, ms.HeapInuse, ms.HeapReleased, ms.HeapObjects)
+		for _ = range c {
+
+			if !p.Iterator.IsIndexing() {
+				continue
+			}
+
+			p.Logger.Status("indexing %d records indexed", p.Iterator.Seen)
 		}
 	}()
 
-*/
+	return nil
+}

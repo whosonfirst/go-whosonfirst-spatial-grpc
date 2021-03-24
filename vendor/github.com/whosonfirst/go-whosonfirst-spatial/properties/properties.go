@@ -2,23 +2,19 @@ package properties
 
 import (
 	"context"
+	"fmt"
 	"github.com/aaronland/go-roster"
 	wof_geojson "github.com/whosonfirst/go-whosonfirst-geojson-v2"
-	"github.com/whosonfirst/go-whosonfirst-spatial/geojson"
-	"github.com/whosonfirst/go-whosonfirst-spr"
+	"github.com/whosonfirst/go-whosonfirst-spatial"
+	"github.com/whosonfirst/go-whosonfirst-spr/v2"
 	"net/url"
+	"sort"
+	"strings"
 )
-
-type PropertiesResponse map[string]interface{}
-
-type PropertiesResponseResults struct {
-	Properties []*PropertiesResponse `json:"properties"`
-}
 
 type PropertiesReader interface {
 	IndexFeature(context.Context, wof_geojson.Feature) error
-	PropertiesResponseResultsWithStandardPlacesResults(context.Context, spr.StandardPlacesResults, []string) (*PropertiesResponseResults, error)
-	AppendPropertiesWithFeatureCollection(context.Context, *geojson.GeoJSONFeatureCollection, []string) error
+	PropertiesResponseResultsWithStandardPlacesResults(context.Context, spr.StandardPlacesResults, []string) (*spatial.PropertiesResponseResults, error)
 	Close(context.Context) error
 }
 
@@ -51,6 +47,26 @@ func RegisterPropertiesReader(ctx context.Context, scheme string, f PropertiesRe
 	}
 
 	return properties_readers.Register(ctx, scheme, f)
+}
+
+func Schemes() []string {
+
+	ctx := context.Background()
+	schemes := []string{}
+
+	err := ensurePropertiesRoster()
+
+	if err != nil {
+		return schemes
+	}
+
+	for _, dr := range properties_readers.Drivers(ctx) {
+		scheme := fmt.Sprintf("%s://", strings.ToLower(dr))
+		schemes = append(schemes, scheme)
+	}
+
+	sort.Strings(schemes)
+	return schemes
 }
 
 func NewPropertiesReader(ctx context.Context, uri string) (PropertiesReader, error) {

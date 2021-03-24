@@ -6,7 +6,7 @@ import (
 	"github.com/whosonfirst/go-whosonfirst-spatial-grpc/spatial"
 	"github.com/whosonfirst/go-whosonfirst-spatial/app"
 	"github.com/whosonfirst/go-whosonfirst-spatial/filter"
-	"github.com/whosonfirst/go-whosonfirst-spr"
+	"github.com/whosonfirst/go-whosonfirst-spr/v2"
 	"log"
 )
 
