@@ -7,7 +7,6 @@ import (
 	"github.com/sfomuseum/go-flags/lookup"
 	grpc_flags "github.com/whosonfirst/go-whosonfirst-spatial-grpc/flags"
 	"github.com/whosonfirst/go-whosonfirst-spatial-grpc/spatial"
-	"github.com/whosonfirst/go-whosonfirst-spatial-pip"
 	spatial_flags "github.com/whosonfirst/go-whosonfirst-spatial/flags"
 	"google.golang.org/grpc"
 	"log"

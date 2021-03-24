@@ -3,8 +3,8 @@ syntax = "proto3";
 // https://blog.golang.org/protobuf-apiv2
 
 service Spatial {
-	rpc PointInPolygon (PointInPolygonRequest struct) returns (StandardPlacesResults) {}
-	rpc PointInPolygonStream (PointInPolygonRequest struct) returns (stream StandardPlaceResponse) {}	
+	rpc PointInPolygon (PointInPolygonRequest) returns (StandardPlacesResults) {}
+	rpc PointInPolygonStream (PointInPolygonRequest) returns (stream StandardPlaceResponse) {}	
 }
 
 enum ExistentialFlag {

@@ -71,7 +71,7 @@ func (s *SpatialServer) PointInPolygon(ctx context.Context, req *spatial.PointIn
 	return grpc_rsp, nil
 }
 
-func (s *SpatialServer) PointInPolygonStream(req *spatial.Coordinate, stream spatial.Spatial_PointInPolygonStreamServer) error {
+func (s *SpatialServer) PointInPolygonStream(req *spatial.PointInPolygonRequest, stream spatial.Spatial_PointInPolygonStreamServer) error {
 
 	spatial_db := s.app.SpatialDatabase
 
