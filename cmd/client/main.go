@@ -3,18 +3,55 @@ package main
 import (
 	"context"
 	"fmt"
+	"github.com/sfomuseum/go-flags/flagset"
+	"github.com/sfomuseum/go-flags/lookup"
+	grpc_flags "github.com/whosonfirst/go-whosonfirst-spatial-grpc/flags"
 	"github.com/whosonfirst/go-whosonfirst-spatial-grpc/spatial"
+	spatial_flags "github.com/whosonfirst/go-whosonfirst-spatial/flags"
 	"google.golang.org/grpc"
 	"log"
 )
 
 func main() {
 
-	host := "localhost"
-	port := 8282
+	fs := flagset.NewFlagSet("client")
 
-	lat := float32(37.605)
-	lon := float32(-122.405)
+	err := grpc_flags.AppendGRPCClientFlags(fs)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	err = spatial_flags.AppendQueryFlags(fs)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	flagset.Parse(fs)
+
+	ctx := context.Background()
+
+	err = grpc_flags.ValidateGRPCClientFlags(fs)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	err = spatial_flags.ValidateQueryFlags(fs)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	host, _ := lookup.StringVar(fs, grpc_flags.HOST)
+	port, _ := lookup.IntVar(fs, grpc_flags.PORT)
+
+	lat, _ := lookup.Float64Var(fs, spatial_flags.LATITUDE)
+	lon, _ := lookup.Float64Var(fs, spatial_flags.LONGITUDE)
+
+	lat32 := float32(lat)
+	lon32 := float32(lon)
 
 	var opts []grpc.DialOption
 	opts = append(opts, grpc.WithInsecure())
@@ -24,7 +61,7 @@ func main() {
 	conn, err := grpc.Dial(addr, opts...)
 
 	if err != nil {
-		log.Fatalf("fail to dial: %v", err)
+		log.Fatalf("fail to dial '%s', %v", addr, err)
 	}
 
 	defer conn.Close()
@@ -32,11 +69,9 @@ func main() {
 	client := spatial.NewSpatialClient(conn)
 
 	req := &spatial.Coordinate{
-		Latitude:  lat,
-		Longitude: lon,
+		Latitude:  lat32,
+		Longitude: lon32,
 	}
-
-	ctx := context.Background()
 
 	stream, err := client.PointInPolygon(ctx, req)
 

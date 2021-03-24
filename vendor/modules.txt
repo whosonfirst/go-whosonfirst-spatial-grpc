@@ -2,6 +2,8 @@
 github.com/aaronland/go-json-query
 # github.com/aaronland/go-roster v0.0.2
 github.com/aaronland/go-roster
+# github.com/dhconnelly/rtreego v1.0.0
+github.com/dhconnelly/rtreego
 # github.com/golang/protobuf v1.5.1
 ## explicit
 github.com/golang/protobuf/proto
@@ -17,6 +19,8 @@ github.com/hashicorp/go-multierror
 github.com/mmcloughlin/geohash
 # github.com/natefinch/atomic v0.0.0-20200526193002-18c0533a5b09
 github.com/natefinch/atomic
+# github.com/patrickmn/go-cache v2.1.0+incompatible
+github.com/patrickmn/go-cache
 # github.com/paulmach/go.geojson v1.4.0
 github.com/paulmach/go.geojson
 # github.com/sfomuseum/go-edtf v0.2.3
@@ -89,6 +93,10 @@ github.com/whosonfirst/go-whosonfirst-spatial/filter
 github.com/whosonfirst/go-whosonfirst-spatial/flags
 github.com/whosonfirst/go-whosonfirst-spatial/geo
 github.com/whosonfirst/go-whosonfirst-spatial/properties
+github.com/whosonfirst/go-whosonfirst-spatial/timer
+# github.com/whosonfirst/go-whosonfirst-spatial-rtree v0.0.9
+## explicit
+github.com/whosonfirst/go-whosonfirst-spatial-rtree
 # github.com/whosonfirst/go-whosonfirst-spr/v2 v2.0.0
 ## explicit
 github.com/whosonfirst/go-whosonfirst-spr/v2
