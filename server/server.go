@@ -60,7 +60,7 @@ func (s *SpatialServer) PointInPolygon(ctx context.Context, req *spatial.PointIn
 	}
 
 	grpc_rsp := &spatial.StandardPlacesResults{
-		Results: grpc_results,
+		Places: grpc_results,
 	}
 
 	return grpc_rsp, nil
@@ -153,10 +153,11 @@ func sprResponseToGRPCResponse(spr_result spr.StandardPlacesResult) *spatial.Sta
 		IsDeprecated:  is_deprecated,
 		IsSuperseding: is_superseding,
 		IsSuperseded:  is_superseded,
-		// Supersedes: spr_result.Supersedes(),
-		// SupersededBy: spr_result.SupersededBy(),
+		Supersedes: spr_result.Supersedes(),
+		SupersededBy: spr_result.SupersededBy(),
+		// this is panic-ing... (20210325/thisisaaronland)
 		// BelongsTo: spr_result.BelongsTo(),
-		// LastModified: spr_result.LastModified(),
+		LastModified: spr_result.LastModified(),
 	}
 
 	return grpc_rsp
