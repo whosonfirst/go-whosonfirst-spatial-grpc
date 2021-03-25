@@ -8,7 +8,7 @@ import (
 	"github.com/whosonfirst/go-whosonfirst-spatial/app"
 	"github.com/whosonfirst/go-whosonfirst-spatial/filter"
 	"github.com/whosonfirst/go-whosonfirst-spr/v2"
-	"log"
+	_ "log"
 )
 
 type SpatialServer struct {
@@ -43,48 +43,20 @@ func (s *SpatialServer) PointInPolygon(ctx context.Context, req *spatial.PointIn
 		return nil, err
 	}
 
-	rsp, err := spatial_db.PointInPolygon(ctx, &coord, f)
+	pip_rsp, err := spatial_db.PointInPolygon(ctx, &coord, f)
 
 	if err != nil {
 		return nil, err
 	}
 
-	results := rsp.Results()
+	results := pip_rsp.Results()
 	count := len(results)
-
-	log.Println("COUNT", count, lat, lon)
 
 	grpc_results := make([]*spatial.StandardPlaceResponse, count)
 
-	for idx, spr_result := range results {
-
-		is_current := existentialFlagToProtobufExistentialFlag(spr_result.IsCurrent())
-		is_ceased := existentialFlagToProtobufExistentialFlag(spr_result.IsCeased())
-		is_deprecated := existentialFlagToProtobufExistentialFlag(spr_result.IsDeprecated())
-		is_superseding := existentialFlagToProtobufExistentialFlag(spr_result.IsSuperseding())
-		is_superseded := existentialFlagToProtobufExistentialFlag(spr_result.IsSuperseded())
-
-		lat32 := float32(spr_result.Latitude())
-		lon32 := float32(spr_result.Longitude())
-
-		grpc_result := &spatial.StandardPlaceResponse{
-			Id:            spr_result.Id(),
-			ParentId:      spr_result.ParentId(),
-			Placetype:     spr_result.Placetype(),
-			Country:       spr_result.Country(),
-			Repo:          spr_result.Repo(),
-			Path:          spr_result.Path(),
-			Uri:           spr_result.URI(),
-			Latitude:      lat32,
-			Longitude:     lon32,
-			IsCurrent:     is_current,
-			IsCeased:      is_ceased,
-			IsDeprecated:  is_deprecated,
-			IsSuperseding: is_superseding,
-			IsSuperseded:  is_superseded,
-		}
-
-		grpc_results[idx] = grpc_result
+	for idx, spr_rsp := range results {
+		grpc_rsp := sprResponseToGRPCResponse(spr_rsp)
+		grpc_results[idx] = grpc_rsp
 	}
 
 	grpc_rsp := &spatial.StandardPlacesResults{
@@ -132,13 +104,10 @@ func (s *SpatialServer) PointInPolygonStream(req *spatial.PointInPolygonRequest,
 			return nil
 		case <-done_ch:
 			working = false
-		case spr_result := <-rsp_ch:
+		case spr_rsp := <-rsp_ch:
 
-			grpc_result := &spatial.StandardPlaceResponse{
-				Id: spr_result.Id(),
-			}
-
-			err := stream.SendMsg(grpc_result)
+			grpc_rsp := sprResponseToGRPCResponse(spr_rsp)
+			err := stream.SendMsg(grpc_rsp)
 
 			if err != nil {
 				return err
@@ -156,6 +125,41 @@ func (s *SpatialServer) PointInPolygonStream(req *spatial.PointInPolygonRequest,
 	}
 
 	return nil
+}
+
+func sprResponseToGRPCResponse(spr_result spr.StandardPlacesResult) *spatial.StandardPlaceResponse {
+
+	is_current := existentialFlagToProtobufExistentialFlag(spr_result.IsCurrent())
+	is_ceased := existentialFlagToProtobufExistentialFlag(spr_result.IsCeased())
+	is_deprecated := existentialFlagToProtobufExistentialFlag(spr_result.IsDeprecated())
+	is_superseding := existentialFlagToProtobufExistentialFlag(spr_result.IsSuperseding())
+	is_superseded := existentialFlagToProtobufExistentialFlag(spr_result.IsSuperseded())
+
+	lat32 := float32(spr_result.Latitude())
+	lon32 := float32(spr_result.Longitude())
+
+	grpc_rsp := &spatial.StandardPlaceResponse{
+		Id:            spr_result.Id(),
+		ParentId:      spr_result.ParentId(),
+		Placetype:     spr_result.Placetype(),
+		Country:       spr_result.Country(),
+		Repo:          spr_result.Repo(),
+		Path:          spr_result.Path(),
+		Uri:           spr_result.URI(),
+		Latitude:      lat32,
+		Longitude:     lon32,
+		IsCurrent:     is_current,
+		IsCeased:      is_ceased,
+		IsDeprecated:  is_deprecated,
+		IsSuperseding: is_superseding,
+		IsSuperseded:  is_superseded,
+		// Supersedes: spr_result.Supersedes(),
+		// SupersededBy: spr_result.SupersededBy(),
+		// BelongsTo: spr_result.BelongsTo(),
+		// LastModified: spr_result.LastModified(),
+	}
+
+	return grpc_rsp
 }
 
 func existentialFlagToProtobufExistentialFlag(fl flags.ExistentialFlag) spatial.ExistentialFlag {
