@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"github.com/whosonfirst/go-whosonfirst-flags"
 	geojson_utils "github.com/whosonfirst/go-whosonfirst-geojson-v2/utils"
 	"github.com/whosonfirst/go-whosonfirst-spatial-grpc/spatial"
 	"github.com/whosonfirst/go-whosonfirst-spatial/app"
@@ -57,8 +58,30 @@ func (s *SpatialServer) PointInPolygon(ctx context.Context, req *spatial.PointIn
 
 	for idx, spr_result := range results {
 
+		is_current := existentialFlagToProtobufExistentialFlag(spr_result.IsCurrent())
+		is_ceased := existentialFlagToProtobufExistentialFlag(spr_result.IsCeased())
+		is_deprecated := existentialFlagToProtobufExistentialFlag(spr_result.IsDeprecated())
+		is_superseding := existentialFlagToProtobufExistentialFlag(spr_result.IsSuperseding())
+		is_superseded := existentialFlagToProtobufExistentialFlag(spr_result.IsSuperseded())
+
+		lat32 := float32(spr_result.Latitude())
+		lon32 := float32(spr_result.Longitude())
+
 		grpc_result := &spatial.StandardPlaceResponse{
-			Id: spr_result.Id(),
+			Id:            spr_result.Id(),
+			ParentId:      spr_result.ParentId(),
+			Placetype:     spr_result.Placetype(),
+			Country:       spr_result.Country(),
+			Repo:          spr_result.Repo(),
+			Path:          spr_result.Path(),
+			Uri:           spr_result.URI(),
+			Latitude:      lat32,
+			Longitude:     lon32,
+			IsCurrent:     is_current,
+			IsCeased:      is_ceased,
+			IsDeprecated:  is_deprecated,
+			IsSuperseding: is_superseding,
+			IsSuperseded:  is_superseded,
 		}
 
 		grpc_results[idx] = grpc_result
@@ -133,4 +156,17 @@ func (s *SpatialServer) PointInPolygonStream(req *spatial.PointInPolygonRequest,
 	}
 
 	return nil
+}
+
+func existentialFlagToProtobufExistentialFlag(fl flags.ExistentialFlag) spatial.ExistentialFlag {
+
+	if !fl.IsKnown() {
+		return spatial.ExistentialFlag_UNKNOWN
+	}
+
+	if !fl.IsTrue() {
+		return spatial.ExistentialFlag_FALSE
+	}
+
+	return spatial.ExistentialFlag_TRUE
 }

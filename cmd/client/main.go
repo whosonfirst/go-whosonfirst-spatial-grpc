@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"github.com/sfomuseum/go-flags/flagset"
 	"github.com/sfomuseum/go-flags/lookup"
@@ -9,7 +10,9 @@ import (
 	"github.com/whosonfirst/go-whosonfirst-spatial-grpc/spatial"
 	spatial_flags "github.com/whosonfirst/go-whosonfirst-spatial/flags"
 	"google.golang.org/grpc"
+	"io"
 	"log"
+	"os"
 )
 
 func main() {
@@ -74,10 +77,25 @@ func main() {
 		log.Fatal(err)
 	}
 
-	log.Println(len(stream.Results))
+	to_stdout, _ := lookup.BoolVar(fs, grpc_flags.TO_STDOUT)
+	to_null, _ := lookup.BoolVar(fs, grpc_flags.TO_NULL)
 
-	for _, r := range stream.Results {
-		log.Println(r, r.Id, r.ParentId)
+	writers := make([]io.Writer, 0)
+
+	if to_stdout {
+		writers = append(writers, os.Stdout)
 	}
 
+	if to_null {
+		writers = append(writers, io.Discard)
+	}
+
+	wr := io.MultiWriter(writers...)
+
+	enc := json.NewEncoder(wr)
+	err = enc.Encode(stream)
+
+	if err != nil {
+		log.Fatalf("Failed to encode stream, %v", err)
+	}
 }

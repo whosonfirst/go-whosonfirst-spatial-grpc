@@ -19,7 +19,6 @@ message PointInPolygonRequest {
 }
 
 message StandardPlaceResponse {
-	// int64 wofid = 1;
 	string id = 1;
 	string parent_id = 2;
 	string placetype = 3;
@@ -33,7 +32,9 @@ message StandardPlaceResponse {
 	ExistentialFlag is_ceased = 11;
 	ExistentialFlag is_deprecated = 12;
 	ExistentialFlag is_superseded = 13;
-	ExistentialFlag is_superseding = 14;		
+	ExistentialFlag is_superseding = 14;
+	// string inception_date = 15;
+	// string cessation_date = 15;	
 }
 
 message StandardPlacesResults {

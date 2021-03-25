@@ -2,8 +2,8 @@ package server
 
 import (
 	"context"
-	"fmt"
 	"flag"
+	"fmt"
 	"github.com/sfomuseum/go-flags/flagset"
 	"github.com/sfomuseum/go-flags/lookup"
 	grpc_flags "github.com/whosonfirst/go-whosonfirst-spatial-grpc/flags"
