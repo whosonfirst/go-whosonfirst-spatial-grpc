@@ -61,6 +61,7 @@ github.com/golang/protobuf v1.4.0-rc.4.0.20200313231945-b860323f09d0/go.mod h1:W
 github.com/golang/protobuf v1.4.0/go.mod h1:jodUvKwWbYaEsadDk5Fwe5c77LiNKVO9IDvqG2KuDX0=
 github.com/golang/protobuf v1.4.1/go.mod h1:U8fpvMrcmy5pZrNK1lt4xCsGvpyWQ/VVv6QDs8UjoX8=
 github.com/golang/protobuf v1.4.2/go.mod h1:oDoupMAO8OvCJWAcko0GGGIgR6R6ocIYbsSw735rRwI=
+github.com/golang/protobuf v1.5.0 h1:LUVKkCeviFUMKqHa4tXIIij/lbhnMbP7Fn5wKdKkRh4=
 github.com/golang/protobuf v1.5.0/go.mod h1:FsONVRAS9T7sI+LIUmWTfcYkHO4aIWwzhcaSAoJOfIk=
 github.com/golang/protobuf v1.5.1 h1:jAbXjIeW2ZSW2AwFxlGTDoc2CjI2XujLkV3ArsZFCvc=
 github.com/golang/protobuf v1.5.1/go.mod h1:DopwsBzvsk0Fs44TXzsVbJyPhcCPeIwnvohx4u74HPM=
@@ -236,6 +237,8 @@ github.com/whosonfirst/go-whosonfirst-spatial-pip v0.0.5 h1:OiZJK2PiFmUygrYPZpsN
 github.com/whosonfirst/go-whosonfirst-spatial-pip v0.0.5/go.mod h1:oGaKAuVLyey4EfZw1WukZYmZyN2ICJAfY6UgqvnzSZM=
 github.com/whosonfirst/go-whosonfirst-spatial-pip v0.0.9 h1:0ZggEKeoUNfjawBDdUDg4OTEtv0Xn9/ZCs5oaNHLaGc=
 github.com/whosonfirst/go-whosonfirst-spatial-pip v0.0.9/go.mod h1:2xb/TTeO5S+FOynRuzGo8CLNDxaqIA8EACtfx0QwPWM=
+github.com/whosonfirst/go-whosonfirst-spatial-pip v0.0.10 h1:oyEj7BbLT86mgmnFCl71RppsF4uknykgO/JEEsLUl3Y=
+github.com/whosonfirst/go-whosonfirst-spatial-pip v0.0.10/go.mod h1:9N4CAPNrId8ai2mmnokyib+IxduxBlVXPuC1SwOoiiI=
 github.com/whosonfirst/go-whosonfirst-spatial-rtree v0.0.9 h1:VbIs9iQ9llKsm8OiCSi8MpEtLc3D+yG8qFYHVm3//G0=
 github.com/whosonfirst/go-whosonfirst-spatial-rtree v0.0.9/go.mod h1:LqwApGWDtXR30NgoD+3cJTfz8FeFbqSTmq0NDOxFWGg=
 github.com/whosonfirst/go-whosonfirst-spatial-rtree v0.0.10 h1:owWbMIN7dwzKBR0EU0UZfO3ZhyDQEXEmuLkxAZp2c/E=
@@ -322,6 +325,8 @@ google.golang.org/grpc v1.28.0 h1:bO/TA4OxCOummhSf10siHuG7vJOiwh7SpRpFZDkOgl4=
 google.golang.org/grpc v1.28.0/go.mod h1:rpkK4SK4GF4Ach/+MFLZUBavHOvF2JJB5uozKKal+60=
 google.golang.org/grpc v1.36.0 h1:o1bcQ6imQMIOpdrO3SWf2z5RV72WbDwdXuK0MDlc8As=
 google.golang.org/grpc v1.36.0/go.mod h1:qjiiYl8FncCW8feJPdyg3v6XW24KsRHe+dy9BAGRRjU=
+google.golang.org/grpc v1.36.1 h1:cmUfbeGKnz9+2DD/UYsMQXeqbHZqZDs4eQwW0sFOpBY=
+google.golang.org/grpc v1.36.1/go.mod h1:qjiiYl8FncCW8feJPdyg3v6XW24KsRHe+dy9BAGRRjU=
 google.golang.org/grpc/cmd/protoc-gen-go-grpc v1.1.0 h1:M1YKkFIboKNieVO5DLUEVzQfGwJD30Nv2jfUgzb5UcE=
 google.golang.org/grpc/cmd/protoc-gen-go-grpc v1.1.0/go.mod h1:6Kw0yEErY5E/yWrBtf03jp27GLLJujG4z/JK95pnjjw=
 google.golang.org/protobuf v0.0.0-20200109180630-ec00e32a8dfd/go.mod h1:DFci5gLYBciE7Vtevhsrf46CRTquxDuWsQurQQe4oz8=
