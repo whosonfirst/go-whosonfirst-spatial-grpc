@@ -1,5 +1,7 @@
+# https://developers.google.com/protocol-buffers/docs/reference/go-generated
+
 proto:
-	 protoc -I spatial/ spatial/spatial.proto --go_out=plugins=grpc:spatial
+	protoc --go_out=. --go_opt=paths=source_relative --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative spatial/spatial.proto
 
 cli:
 	go build -mod vendor -o bin/server cmd/server/main.go
