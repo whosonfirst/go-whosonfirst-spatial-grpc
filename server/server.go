@@ -12,8 +12,8 @@ import (
 )
 
 type SpatialServer struct {
-	spatial.UnimplementedSpatialServer	// Go is weird...
-	app *app.SpatialApplication
+	spatial.UnimplementedSpatialServer // Go is weird...
+	app                                *app.SpatialApplication
 }
 
 func NewSpatialServer(app *app.SpatialApplication) (*SpatialServer, error) {
