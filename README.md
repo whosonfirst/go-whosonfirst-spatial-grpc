@@ -1,6 +1,6 @@
 # go-whosonfirst-spatial-grpc
 
-GRPC support for the `go-whosonfirst-spatial` interfaces.
+gRPC support for the `go-whosonfirst-spatial` interfaces.
 
 ## Important
 
