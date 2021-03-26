@@ -153,11 +153,10 @@ func sprResponseToGRPCResponse(spr_result spr.StandardPlacesResult) *spatial.Sta
 		IsDeprecated:  is_deprecated,
 		IsSuperseding: is_superseding,
 		IsSuperseded:  is_superseded,
-		Supersedes: spr_result.Supersedes(),
-		SupersededBy: spr_result.SupersededBy(),
-		// this is panic-ing... (20210325/thisisaaronland)
-		// BelongsTo: spr_result.BelongsTo(),
-		LastModified: spr_result.LastModified(),
+		Supersedes:    spr_result.Supersedes(),
+		SupersededBy:  spr_result.SupersededBy(),
+		BelongsTo:     spr_result.BelongsTo(),
+		LastModified:  spr_result.LastModified(),
 	}
 
 	return grpc_rsp
