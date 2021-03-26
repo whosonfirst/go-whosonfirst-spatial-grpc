@@ -7,3 +7,4 @@ Work in progress. Everything will change. Documentation to follow.
 * https://github.com/whosonfirst/go-whosonfirst-spatial
 * https://github.com/whosonfirst/go-whosonfirst-spatial-rtree
 * https://github.com/whosonfirst/go-whosonfirst-spatial-pip
+* https://github.com/grpc/grpc-go
