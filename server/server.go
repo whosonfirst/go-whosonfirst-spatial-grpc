@@ -3,7 +3,6 @@ package server
 import (
 	"context"
 	"github.com/whosonfirst/go-whosonfirst-flags"
-	geojson_utils "github.com/whosonfirst/go-whosonfirst-geojson-v2/utils"
 	"github.com/whosonfirst/go-whosonfirst-spatial-grpc/request"
 	"github.com/whosonfirst/go-whosonfirst-spatial-grpc/spatial"
 	"github.com/whosonfirst/go-whosonfirst-spatial/app"
@@ -27,12 +26,7 @@ func NewSpatialServer(app *app.SpatialApplication) (*SpatialServer, error) {
 
 func (s *SpatialServer) PointInPolygon(ctx context.Context, req *spatial.PointInPolygonRequest) (*spatial.StandardPlacesResults, error) {
 
-	spatial_db := s.app.SpatialDatabase
-
-	lat := float64(req.Latitude)
-	lon := float64(req.Longitude)
-
-	coord, err := geojson_utils.NewCoordinateFromLatLons(lat, lon)
+	coord, err := request.CoordsFromPointInPolygonRequest(req)
 
 	if err != nil {
 		return nil, err
@@ -43,6 +37,8 @@ func (s *SpatialServer) PointInPolygon(ctx context.Context, req *spatial.PointIn
 	if err != nil {
 		return nil, err
 	}
+
+	spatial_db := s.app.SpatialDatabase
 
 	pip_rsp, err := spatial_db.PointInPolygon(ctx, &coord, f)
 
@@ -69,12 +65,7 @@ func (s *SpatialServer) PointInPolygon(ctx context.Context, req *spatial.PointIn
 
 func (s *SpatialServer) PointInPolygonStream(req *spatial.PointInPolygonRequest, stream spatial.Spatial_PointInPolygonStreamServer) error {
 
-	spatial_db := s.app.SpatialDatabase
-
-	lat := float64(req.Latitude)
-	lon := float64(req.Longitude)
-
-	coord, err := geojson_utils.NewCoordinateFromLatLons(lat, lon)
+	coord, err := request.CoordsFromPointInPolygonRequest(req)
 
 	if err != nil {
 		return err
@@ -96,6 +87,8 @@ func (s *SpatialServer) PointInPolygonStream(req *spatial.PointInPolygonRequest,
 	done_ch := make(chan bool)
 
 	working := true
+
+	spatial_db := s.app.SpatialDatabase
 
 	go spatial_db.PointInPolygonWithChannels(ctx, rsp_ch, err_ch, done_ch, &coord, f)
 
@@ -139,6 +132,17 @@ func sprResponseToGRPCResponse(spr_result spr.StandardPlacesResult) *spatial.Sta
 	lat32 := float32(spr_result.Latitude())
 	lon32 := float32(spr_result.Longitude())
 
+	var inception string
+	var cessation string
+
+	if spr_result.Inception() != nil {
+		inception = spr_result.Inception().String()
+	}
+
+	if spr_result.Cessation() != nil {
+		cessation = spr_result.Cessation().String()
+	}
+
 	grpc_rsp := &spatial.StandardPlaceResponse{
 		Id:            spr_result.Id(),
 		ParentId:      spr_result.ParentId(),
@@ -158,6 +162,9 @@ func sprResponseToGRPCResponse(spr_result spr.StandardPlacesResult) *spatial.Sta
 		SupersededBy:  spr_result.SupersededBy(),
 		BelongsTo:     spr_result.BelongsTo(),
 		LastModified:  spr_result.LastModified(),
+		Name:          spr_result.Name(),
+		InceptionDate: inception,
+		CessationDate: cessation,
 	}
 
 	return grpc_rsp

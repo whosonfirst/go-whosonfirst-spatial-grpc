@@ -47,26 +47,3 @@ func NewPointInPolygonRequest(pip_req *pip.PointInPolygonRequest) (*spatial.Poin
 
 	return req, nil
 }
-
-func existentialIntFlagsToProtobufExistentialFlags(int_flags []int64) []spatial.ExistentialFlag {
-
-	sp_flags := make([]spatial.ExistentialFlag, len(int_flags))
-
-	for idx, i := range int_flags {
-
-		var fl spatial.ExistentialFlag
-
-		switch i {
-		case 0:
-			fl = spatial.ExistentialFlag_FALSE
-		case 1:
-			fl = spatial.ExistentialFlag_TRUE
-		default:
-			fl = spatial.ExistentialFlag_UNKNOWN
-		}
-
-		sp_flags[idx] = fl
-	}
-
-	return sp_flags
-}

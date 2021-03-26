@@ -8,14 +8,20 @@ import (
 
 func SPRFilterFromPointInPolygonRequest(req *spatial.PointInPolygonRequest) (wof_spatial.Filter, error) {
 
+	is_current := protobufExistentalFlagsToExistentialIntFlags(req.IsCurrent)
+	is_ceased := protobufExistentalFlagsToExistentialIntFlags(req.IsCeased)
+	is_deprecated := protobufExistentalFlagsToExistentialIntFlags(req.IsDeprecated)
+	is_superseded := protobufExistentalFlagsToExistentialIntFlags(req.IsSuperseded)
+	is_superseding := protobufExistentalFlagsToExistentialIntFlags(req.IsSuperseding)
+
 	inputs := &wof_filter.SPRInputs{
-		Placetypes: req.Placetypes,
-		// IsCurrent:
-		// IsCeased:
-		// IsDeprecated:
-		// IsSuperseded:
-		// IsSuperseding:
-		// Geometries: req.Geometries,
+		Placetypes:          req.Placetypes,
+		IsCurrent:           is_current,
+		IsCeased:            is_ceased,
+		IsDeprecated:        is_deprecated,
+		IsSuperseded:        is_superseded,
+		IsSuperseding:       is_superseding,
+		Geometries:          []string{req.Geometries},
 		AlternateGeometries: req.AlternateGeometries,
 		InceptionDate:       req.InceptionDate,
 		CessationDate:       req.CessationDate,
