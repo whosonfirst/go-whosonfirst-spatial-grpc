@@ -4,9 +4,9 @@ import (
 	"context"
 	"github.com/whosonfirst/go-whosonfirst-flags"
 	geojson_utils "github.com/whosonfirst/go-whosonfirst-geojson-v2/utils"
+	"github.com/whosonfirst/go-whosonfirst-spatial-grpc/request"
 	"github.com/whosonfirst/go-whosonfirst-spatial-grpc/spatial"
 	"github.com/whosonfirst/go-whosonfirst-spatial/app"
-	"github.com/whosonfirst/go-whosonfirst-spatial/filter"
 	"github.com/whosonfirst/go-whosonfirst-spr/v2"
 	_ "log"
 )
@@ -38,7 +38,7 @@ func (s *SpatialServer) PointInPolygon(ctx context.Context, req *spatial.PointIn
 		return nil, err
 	}
 
-	f, err := filter.NewSPRFilter()
+	f, err := request.SPRFilterFromPointInPolygonRequest(req)
 
 	if err != nil {
 		return nil, err
@@ -80,7 +80,7 @@ func (s *SpatialServer) PointInPolygonStream(req *spatial.PointInPolygonRequest,
 		return err
 	}
 
-	f, err := filter.NewSPRFilter()
+	f, err := request.SPRFilterFromPointInPolygonRequest(req)
 
 	if err != nil {
 		return err

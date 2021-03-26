@@ -1,11 +1,12 @@
-package spatial
+package request
 
 import (
 	"flag"
+	"github.com/whosonfirst/go-whosonfirst-spatial-grpc/spatial"
 	"github.com/whosonfirst/go-whosonfirst-spatial-pip"
 )
 
-func NewPointInPolygonRequestFromFlagSet(fs *flag.FlagSet) (*PointInPolygonRequest, error) {
+func NewPointInPolygonRequestFromFlagSet(fs *flag.FlagSet) (*spatial.PointInPolygonRequest, error) {
 
 	pip_req, err := pip.NewPointInPolygonRequestFromFlagSet(fs)
 
@@ -16,7 +17,9 @@ func NewPointInPolygonRequestFromFlagSet(fs *flag.FlagSet) (*PointInPolygonReque
 	return NewPointInPolygonRequest(pip_req)
 }
 
-func NewPointInPolygonRequest(pip_req *pip.PointInPolygonRequest) (*PointInPolygonRequest, error) {
+// https://github.com/whosonfirst/go-whosonfirst-spatial-pip/blob/main/pip.go
+
+func NewPointInPolygonRequest(pip_req *pip.PointInPolygonRequest) (*spatial.PointInPolygonRequest, error) {
 
 	lat32 := float32(pip_req.Latitude)
 	lon32 := float32(pip_req.Longitude)
@@ -27,7 +30,7 @@ func NewPointInPolygonRequest(pip_req *pip.PointInPolygonRequest) (*PointInPolyg
 	is_superseded := existentialIntFlagsToProtobufExistentialFlags(pip_req.IsSuperseded)
 	is_superseding := existentialIntFlagsToProtobufExistentialFlags(pip_req.IsSuperseding)
 
-	req := &PointInPolygonRequest{
+	req := &spatial.PointInPolygonRequest{
 		Latitude:            lat32,
 		Longitude:           lon32,
 		Placetypes:          pip_req.Placetypes,
@@ -45,21 +48,21 @@ func NewPointInPolygonRequest(pip_req *pip.PointInPolygonRequest) (*PointInPolyg
 	return req, nil
 }
 
-func existentialIntFlagsToProtobufExistentialFlags(int_flags []int64) []ExistentialFlag {
+func existentialIntFlagsToProtobufExistentialFlags(int_flags []int64) []spatial.ExistentialFlag {
 
-	sp_flags := make([]ExistentialFlag, len(int_flags))
+	sp_flags := make([]spatial.ExistentialFlag, len(int_flags))
 
 	for idx, i := range int_flags {
 
-		var fl ExistentialFlag
+		var fl spatial.ExistentialFlag
 
 		switch i {
 		case 0:
-			fl = ExistentialFlag_FALSE
+			fl = spatial.ExistentialFlag_FALSE
 		case 1:
-			fl = ExistentialFlag_TRUE
+			fl = spatial.ExistentialFlag_TRUE
 		default:
-			fl = ExistentialFlag_UNKNOWN
+			fl = spatial.ExistentialFlag_UNKNOWN
 		}
 
 		sp_flags[idx] = fl

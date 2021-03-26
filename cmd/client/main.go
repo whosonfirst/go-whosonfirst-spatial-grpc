@@ -7,6 +7,7 @@ import (
 	"github.com/sfomuseum/go-flags/flagset"
 	"github.com/sfomuseum/go-flags/lookup"
 	grpc_flags "github.com/whosonfirst/go-whosonfirst-spatial-grpc/flags"
+	"github.com/whosonfirst/go-whosonfirst-spatial-grpc/request"
 	"github.com/whosonfirst/go-whosonfirst-spatial-grpc/spatial"
 	spatial_flags "github.com/whosonfirst/go-whosonfirst-spatial/flags"
 	"google.golang.org/grpc"
@@ -47,7 +48,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	req, err := spatial.NewPointInPolygonRequestFromFlagSet(fs)
+	req, err := request.NewPointInPolygonRequestFromFlagSet(fs)
 
 	if err != nil {
 		log.Fatalf("Failed to create PIP request, %v", err)
