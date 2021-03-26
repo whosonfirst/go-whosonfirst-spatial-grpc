@@ -12,6 +12,7 @@ import (
 )
 
 type SpatialServer struct {
+	spatial.UnimplementedSpatialServer	// Go is weird...
 	app *app.SpatialApplication
 }
 
