@@ -7,8 +7,6 @@ github.com/aaronland/go-roster v1.0.0/go.mod h1:KIsYZgrJlAsyb9LsXSCvlqvbcCBVjCSq
 github.com/census-instrumentation/opencensus-proto v0.2.1/go.mod h1:f6KPmirojxKA12rnyqOA5BBL4O983OfeGPqjHWSTneU=
 github.com/client9/misspell v0.3.4/go.mod h1:qj6jICC3Q7zFZvVWo7KLAzC3yx5G7kyvSDkc90ppPyw=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
-github.com/dhconnelly/rtreego v1.1.0 h1:ejMaqN03N1s6Bdg6peGkNgBnYYSBHzcK8yhSPCB+rHE=
-github.com/dhconnelly/rtreego v1.1.0/go.mod h1:SDozu0Fjy17XH1svEXJgdYq8Tah6Zjfa/4Q33Z80+KM=
 github.com/envoyproxy/go-control-plane v0.9.1-0.20191026205805-5f8ba28d4473/go.mod h1:YTl/9mNaCwkRvm6d1a2C3ymFceY/DCBVvsKhRF0iEA4=
 github.com/envoyproxy/protoc-gen-validate v0.1.0/go.mod h1:iSmxcyjqTsJpI2R4NaDN7+kN2VEUnK/pcBlmesArF7c=
 github.com/g8rswimmer/error-chain v1.0.0 h1:WnwnunlvqtGPHVHmBfbmUyAgrtag8Y6nNpwLWmtSYOQ=
@@ -43,8 +41,6 @@ github.com/kisielk/errcheck v1.5.0/go.mod h1:pFxgyoBC7bSaBwPgfKdkLd5X25qrDl4LWUI
 github.com/kisielk/gotool v1.0.0/go.mod h1:XhKaO+MFFWcvkIS/tQcRk01m1F5IRFswLeQ+oQHNcck=
 github.com/natefinch/atomic v1.0.1 h1:ZPYKxkqQOx3KZ+RsbnP/YsgvxWQPGxjC0oBt2AhwV0A=
 github.com/natefinch/atomic v1.0.1/go.mod h1:N/D/ELrljoqDyT3rZrsUmtsuzvHkeB/wWjHV22AZRbM=
-github.com/patrickmn/go-cache v2.1.0+incompatible h1:HRMgzkcYKYpi3C8ajMPV8OFXaaRUnok+kx1WdO15EQc=
-github.com/patrickmn/go-cache v2.1.0+incompatible/go.mod h1:3Qf8kWWT7OJRJbdiICTKqZju1ZixQ/KpMGzzAfe6+WQ=
 github.com/paulmach/orb v0.7.1 h1:Zha++Z5OX/l168sqHK3k4z18LDvr+YAO/VjK0ReQ9rU=
 github.com/paulmach/orb v0.7.1/go.mod h1:FWRlTgl88VI1RBx/MkrwWDRhQ96ctqMCh8boXhmqB/A=
 github.com/paulmach/protoscan v0.2.1/go.mod h1:SpcSwydNLrxUGSDvXvO0P7g7AuhJ7lcKfDlhJCDw2gY=
@@ -89,12 +85,10 @@ github.com/whosonfirst/go-whosonfirst-placetypes v0.4.2 h1:Sye3ySdkTy5+PPdSLCaZO
 github.com/whosonfirst/go-whosonfirst-placetypes v0.4.2/go.mod h1:HjxisIp+iZOXoThM9XyvC+GCmnupynE73GD3JxhH3fY=
 github.com/whosonfirst/go-whosonfirst-sources v0.1.0 h1:JuKLa6KWke22jBfJ1pM9WQHoz1/3pbDv2C+aR+THPPQ=
 github.com/whosonfirst/go-whosonfirst-sources v0.1.0/go.mod h1:EUMHyGzUmqPPxlMmOp+28BFeoBdxxE0HCKRd67lkqGM=
-github.com/whosonfirst/go-whosonfirst-spatial v0.5.2 h1:ZCxiGqxbgafUKZ7Nz0wcS/+yzPsLJJNHYnaLHZd51Ns=
-github.com/whosonfirst/go-whosonfirst-spatial v0.5.2/go.mod h1:Q8SCUVV0mcGZpMB3Lq9GiBXkm6ZVS/kor4GuPQGvaCA=
+github.com/whosonfirst/go-whosonfirst-spatial v0.5.3 h1:QLmgDJx3O/8e2h2j/uqA+lb5NJHIhgITRm6fkx2BcKc=
+github.com/whosonfirst/go-whosonfirst-spatial v0.5.3/go.mod h1:Q8SCUVV0mcGZpMB3Lq9GiBXkm6ZVS/kor4GuPQGvaCA=
 github.com/whosonfirst/go-whosonfirst-spatial-pip v0.3.1 h1:j2QhDx8t4z0s3RJqvm+Ll4t2zG4c195NZx2XRFRCAtY=
 github.com/whosonfirst/go-whosonfirst-spatial-pip v0.3.1/go.mod h1:klRSLQeAVdFZd84f0xfKjSmVj1L8JCF8GPdGUiVOqnA=
-github.com/whosonfirst/go-whosonfirst-spatial-rtree v0.2.4 h1:3dIRDNU1iwwn/4Xe+yD3FEs1L9x7j1ps/asiRfX+/Ho=
-github.com/whosonfirst/go-whosonfirst-spatial-rtree v0.2.4/go.mod h1:yEmuF0q/mR17zRiRSD3E+9Ro9tlv8nxu8GbdpSwk5Hc=
 github.com/whosonfirst/go-whosonfirst-spr/v2 v2.3.3 h1:dc7BdkGrSKtGyIEO8jW4h6xS0DMdKANwMHFRc1+WcnM=
 github.com/whosonfirst/go-whosonfirst-spr/v2 v2.3.3/go.mod h1:3Sym68fXOfIAcdJiRkJC+8FO+JuSGZ2NuDpRFzWMDi0=
 github.com/whosonfirst/go-whosonfirst-uri v1.2.0 h1:lhmRsIhcpTr5HAo+kXKRGsSt76HTh3Ko/oTR2jpCm/o=

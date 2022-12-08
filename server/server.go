@@ -2,12 +2,13 @@ package server
 
 import (
 	"context"
+	"fmt"
 	"github.com/whosonfirst/go-whosonfirst-flags"
 	"github.com/whosonfirst/go-whosonfirst-spatial-grpc/request"
 	"github.com/whosonfirst/go-whosonfirst-spatial-grpc/spatial"
+	"github.com/whosonfirst/go-whosonfirst-spatial-pip"
 	"github.com/whosonfirst/go-whosonfirst-spatial/app"
 	"github.com/whosonfirst/go-whosonfirst-spr/v2"
-	_ "log"
 )
 
 type SpatialServer struct {
@@ -26,24 +27,11 @@ func NewSpatialServer(app *app.SpatialApplication) (*SpatialServer, error) {
 
 func (s *SpatialServer) PointInPolygon(ctx context.Context, req *spatial.PointInPolygonRequest) (*spatial.StandardPlacesResults, error) {
 
-	coord, err := request.CoordsFromPointInPolygonRequest(req)
+	pip_req := request.PIPRequestFromSpatialRequest(req)
+	pip_rsp, err := pip.QueryPointInPolygon(ctx, s.app, pip_req)
 
 	if err != nil {
-		return nil, err
-	}
-
-	f, err := request.SPRFilterFromPointInPolygonRequest(req)
-
-	if err != nil {
-		return nil, err
-	}
-
-	spatial_db := s.app.SpatialDatabase
-
-	pip_rsp, err := spatial_db.PointInPolygon(ctx, &coord, f)
-
-	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("Failed to perform point in polygon operation, %w", err)
 	}
 
 	results := pip_rsp.Results()
@@ -68,13 +56,13 @@ func (s *SpatialServer) PointInPolygonStream(req *spatial.PointInPolygonRequest,
 	coord, err := request.CoordsFromPointInPolygonRequest(req)
 
 	if err != nil {
-		return err
+		return fmt.Errorf("Failed to derive coordinate from request, %w", err)
 	}
 
 	f, err := request.SPRFilterFromPointInPolygonRequest(req)
 
 	if err != nil {
-		return err
+		return fmt.Errorf("Failed to derive filter from request, %w", err)
 	}
 
 	ctx := context.Background()
