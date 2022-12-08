@@ -50,6 +50,8 @@ $> ./bin/client -h
     	The port to listen for requests on (default 8082)
   -property value
     	One or more Who's On First properties to append to each result.
+  -sort-uri value
+    	Zero or more whosonfirst/go-whosonfirst-spr/sort URIs.
   -stdout
     	Emit results to STDOUT (default true)
 ```
@@ -100,13 +102,13 @@ $> ./bin/server -h
   -is-wof
     	Input data is WOF-flavoured GeoJSON. (Pass a value of '0' or 'false' if you need to index non-WOF documents. (default true)
   -iterator-uri string
-    	A valid whosonfirst/go-whosonfirst-iterate/emitter URI. Supported schemes are: directory://, featurecollection://, file://, filelist://, geojsonl://, repo://. (default "repo://")
+    	A valid whosonfirst/go-whosonfirst-iterate/v2 URI. Supported schemes are: directory://, featurecollection://, file://, filelist://, geojsonl://, null://, repo://. (default "repo://")
   -port int
     	The port to listen for requests on (default 8082)
   -properties-reader-uri string
-    	A valid whosonfirst/go-reader.Reader URI. Available options are: [file:// fs:// null://]
+    	A valid whosonfirst/go-reader.Reader URI. Available options are: [fs:// null:// repo:// stdin://]. If the value is {spatial-database-uri} then the value of the '-spatial-database-uri' implements the reader.Reader interface and will be used.
   -spatial-database-uri string
-    	A valid whosonfirst/go-whosonfirst-spatial/data.SpatialDatabase URI. options are: [rtree://]
+    	A valid whosonfirst/go-whosonfirst-spatial/data.SpatialDatabase URI. options are: []
   -verbose
     	Be chatty.
 ```
@@ -125,7 +127,7 @@ $> ./bin/server -spatial-database-uri rtree:// /usr/local/data/whosonfirst-data-
 ## See also
 
 * https://github.com/whosonfirst/go-whosonfirst-spatial
-* https://github.com/whosonfirst/go-whosonfirst-spatial-rtree
 * https://github.com/whosonfirst/go-whosonfirst-spatial-pip
+* https://github.com/whosonfirst/go-whosonfirst-spatial-grpc-pmtiles
 * https://github.com/whosonfirst/go-whosonfirst-spr
 * https://github.com/grpc/grpc-go
