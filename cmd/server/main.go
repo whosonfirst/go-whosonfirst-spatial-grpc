@@ -1,28 +1,19 @@
 package main
 
 import (
-	_ "github.com/whosonfirst/go-whosonfirst-spatial-rtree"
-)
-
-import (
 	"context"
-	"github.com/whosonfirst/go-whosonfirst-spatial-grpc/server"
+	"github.com/whosonfirst/go-whosonfirst-spatial-grpc/app/server"
 	"log"
 )
 
 func main() {
 
 	ctx := context.Background()
+	logger := log.Default()
 
-	app, err := server.NewServerApplication()
-
-	if err != nil {
-		log.Fatalf("Failed to create new server application, %v", err)
-	}
-
-	err = app.Run(ctx)
+	err := server.Run(ctx, logger)
 
 	if err != nil {
-		log.Fatalf("Failed to run server application, %v", err)
+		logger.Fatalf("Failed to run client, %v", err)
 	}
 }
