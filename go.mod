@@ -6,8 +6,8 @@ require (
 	github.com/paulmach/orb v0.7.1
 	github.com/sfomuseum/go-flags v0.10.0
 	github.com/whosonfirst/go-whosonfirst-flags v0.4.4
-	github.com/whosonfirst/go-whosonfirst-spatial v0.5.3
-	github.com/whosonfirst/go-whosonfirst-spatial-pip v0.3.1
+	github.com/whosonfirst/go-whosonfirst-spatial v0.5.4
+	github.com/whosonfirst/go-whosonfirst-spatial-pip v0.3.2
 	github.com/whosonfirst/go-whosonfirst-spr/v2 v2.3.3
 	google.golang.org/grpc v1.51.0
 	google.golang.org/protobuf v1.28.1
