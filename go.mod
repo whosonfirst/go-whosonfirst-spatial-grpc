@@ -10,7 +10,7 @@ require (
 	github.com/whosonfirst/go-whosonfirst-spatial-pip v0.3.2
 	github.com/whosonfirst/go-whosonfirst-spr/v2 v2.3.3
 	google.golang.org/grpc v1.56.3
-	google.golang.org/protobuf v1.30.0
+	google.golang.org/protobuf v1.33.0
 )
 
 require (
