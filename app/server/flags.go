@@ -7,7 +7,6 @@ import (
 	"strings"
 
 	"github.com/sfomuseum/go-flags/flagset"
-	"github.com/sfomuseum/go-flags/multi"
 	"github.com/whosonfirst/go-reader"
 	"github.com/whosonfirst/go-whosonfirst-iterate/v2/emitter"
 	"github.com/whosonfirst/go-whosonfirst-spatial/database"
@@ -23,6 +22,8 @@ var is_wof bool
 
 var enable_custom_placetypes bool
 var custom_placetypes string
+
+var iterator_uri string
 
 func DefaultFlagSet() (*flag.FlagSet, error) {
 
@@ -46,6 +47,16 @@ func DefaultFlagSet() (*flag.FlagSet, error) {
 	fs.BoolVar(&enable_custom_placetypes, "enable-custom-placetypes", false, "Enable wof:placetype values that are not explicitly defined in the whosonfirst/go-whosonfirst-placetypes repository.")
 
 	fs.StringVar(&custom_placetypes, "custom-placetypes", "", "A JSON-encoded string containing custom placetypes defined using the syntax described in the whosonfirst/go-whosonfirst-placetypes repository.")
-	
+
+	// Indexing flags
+
+	modes := emitter.Schemes()
+	sort.Strings(modes)
+
+	valid_modes := strings.Join(modes, ", ")
+	desc_modes := fmt.Sprintf("A valid whosonfirst/go-whosonfirst-iterate/v2 URI. Supported schemes are: %s.", valid_modes)
+
+	fs.StringVar(&iterator_uri, "iterator-uri", "repo://", desc_modes)
+
 	return fs, nil
 }

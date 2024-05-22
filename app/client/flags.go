@@ -2,11 +2,13 @@ package client
 
 import (
 	"flag"
-	"fmt"
-	
+
 	"github.com/sfomuseum/go-flags/flagset"
-	"github.com/sfomuseum/go-flags/multi"	
+	"github.com/sfomuseum/go-flags/multi"
 )
+
+var host string
+var port int
 
 var latitude float64
 var longitude float64
@@ -25,8 +27,8 @@ var is_deprecated multi.MultiInt64
 var is_superseded multi.MultiInt64
 var is_superseding multi.MultiInt64
 
-var host string
-var port int
+var sort_uris multi.MultiString
+
 var stdout bool
 var null bool
 

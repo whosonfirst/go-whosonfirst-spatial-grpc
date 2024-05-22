@@ -5,9 +5,10 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	
+
 	"github.com/whosonfirst/go-whosonfirst-spatial-grpc/request"
 	"github.com/whosonfirst/go-whosonfirst-spatial-grpc/spatial"
+	"github.com/whosonfirst/go-whosonfirst-spatial/pip"
 	"google.golang.org/grpc"
 	"io"
 	"log"
@@ -37,8 +38,8 @@ func RunWithFlagSet(ctx context.Context, fs *flag.FlagSet, logger *log.Logger) e
 }
 
 func RunWithOptions(ctx context.Context, opts *RunOptions, logger *log.Logger) error {
-		
-	req := &pip.PointInPolygonRequest{
+
+	pip_req := &pip.PointInPolygonRequest{
 		Latitude:            opts.Latitude,
 		Longitude:           opts.Longitude,
 		Placetypes:          opts.Placetypes,
@@ -54,22 +55,19 @@ func RunWithOptions(ctx context.Context, opts *RunOptions, logger *log.Logger) e
 		Properties:          opts.Properties,
 		Sort:                opts.Sort,
 	}
-	
-	req, err := request.NewPointInPolygonRequestFromFlagSet(fs)
+
+	spatial_req, err := request.NewPointInPolygonRequest(pip_req)
 
 	if err != nil {
-		return fmt.Errorf("Failed to create PIP request, %v", err)
+		return fmt.Errorf("Failed to create spatial PIP request, %w", err)
 	}
 
-	host, _ := lookup.StringVar(fs, grpc_flags.HOST)
-	port, _ := lookup.IntVar(fs, grpc_flags.PORT)
+	var grpc_opts []grpc.DialOption
+	grpc_opts = append(grpc_opts, grpc.WithInsecure())
 
-	var opts []grpc.DialOption
-	opts = append(opts, grpc.WithInsecure())
+	addr := fmt.Sprintf("%s:%d", opts.Host, opts.Port)
 
-	addr := fmt.Sprintf("%s:%d", host, port)
-
-	conn, err := grpc.Dial(addr, opts...)
+	conn, err := grpc.Dial(addr, grpc_opts...)
 
 	if err != nil {
 		return fmt.Errorf("Failed to dial '%s', %v", addr, err)
@@ -79,22 +77,19 @@ func RunWithOptions(ctx context.Context, opts *RunOptions, logger *log.Logger) e
 
 	client := spatial.NewSpatialClient(conn)
 
-	stream, err := client.PointInPolygon(ctx, req)
+	stream, err := client.PointInPolygon(ctx, spatial_req)
 
 	if err != nil {
 		return fmt.Errorf("Failed to perform point in polygon operation, %w", err)
 	}
 
-	to_stdout, _ := lookup.BoolVar(fs, grpc_flags.TO_STDOUT)
-	to_null, _ := lookup.BoolVar(fs, grpc_flags.TO_NULL)
-
 	writers := make([]io.Writer, 0)
 
-	if to_stdout {
+	if opts.Stdout {
 		writers = append(writers, os.Stdout)
 	}
 
-	if to_null {
+	if opts.Null {
 		writers = append(writers, io.Discard)
 	}
 

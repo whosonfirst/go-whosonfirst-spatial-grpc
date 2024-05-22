@@ -6,11 +6,10 @@ import (
 	"fmt"
 	"log"
 	"net"
-	
-	"github.com/sfomuseum/go-flags/flagset"
+
 	grpc_server "github.com/whosonfirst/go-whosonfirst-spatial-grpc/server"
 	"github.com/whosonfirst/go-whosonfirst-spatial-grpc/spatial"
-	spatial_app "github.com/whosonfirst/go-whosonfirst-spatial/application"
+	app "github.com/whosonfirst/go-whosonfirst-spatial/application"
 	"google.golang.org/grpc"
 )
 
@@ -52,15 +51,16 @@ func RunWithOptions(ctx context.Context, opts *RunOptions, logger *log.Logger) e
 	if err != nil {
 		return fmt.Errorf("Failed to create new spatial application, %w", err)
 	}
-	
+
 	if len(opts.IteratorSources) > 0 {
-		err = sp_app.IndexPaths(ctx, opts.IteratorSources...)
-		
+
+		err = spatial_app.IndexPaths(ctx, opts.IteratorSources...)
+
 		if err != nil {
 			return fmt.Errorf("Failed to index paths, %v", err)
 		}
 	}
-	
+
 	spatial_server, err := grpc_server.NewSpatialServer(spatial_app)
 
 	if err != nil {
@@ -71,7 +71,7 @@ func RunWithOptions(ctx context.Context, opts *RunOptions, logger *log.Logger) e
 
 	spatial.RegisterSpatialServer(grpc_server, spatial_server)
 
-	addr := fmt.Sprintf("%s:%d", opt.Host, opts.Port)
+	addr := fmt.Sprintf("%s:%d", opts.Host, opts.Port)
 	log.Printf("Listening on %s\n", addr)
 
 	lis, err := net.Listen("tcp", addr)
