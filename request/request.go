@@ -3,8 +3,9 @@ package request
 import (
 	"flag"
 	"fmt"
+	
 	"github.com/whosonfirst/go-whosonfirst-spatial-grpc/spatial"
-	"github.com/whosonfirst/go-whosonfirst-spatial-pip"
+	"github.com/whosonfirst/go-whosonfirst-spatial/pip"
 )
 
 func PIPRequestFromSpatialRequest(spatial_req *spatial.PointInPolygonRequest) *pip.PointInPolygonRequest {

@@ -5,12 +5,9 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	"github.com/sfomuseum/go-flags/flagset"
-	"github.com/sfomuseum/go-flags/lookup"
-	grpc_flags "github.com/whosonfirst/go-whosonfirst-spatial-grpc/flags"
+	
 	"github.com/whosonfirst/go-whosonfirst-spatial-grpc/request"
 	"github.com/whosonfirst/go-whosonfirst-spatial-grpc/spatial"
-	spatial_flags "github.com/whosonfirst/go-whosonfirst-spatial/flags"
 	"google.golang.org/grpc"
 	"io"
 	"log"
@@ -30,20 +27,34 @@ func Run(ctx context.Context, logger *log.Logger) error {
 
 func RunWithFlagSet(ctx context.Context, fs *flag.FlagSet, logger *log.Logger) error {
 
-	flagset.Parse(fs)
-
-	err := grpc_flags.ValidateGRPCClientFlags(fs)
+	opts, err := RunOptionsFromFlagSet(ctx, fs)
 
 	if err != nil {
-		return fmt.Errorf("Failed to validate grpc client flags, %w", err)
+		return fmt.Errorf("Failed to derive options from flagset, %w", err)
 	}
 
-	err = spatial_flags.ValidateQueryFlags(fs)
+	return RunWithOptions(ctx, opts, logger)
+}
 
-	if err != nil {
-		return fmt.Errorf("Failed to validate query flags, %w", err)
+func RunWithOptions(ctx context.Context, opts *RunOptions, logger *log.Logger) error {
+		
+	req := &pip.PointInPolygonRequest{
+		Latitude:            opts.Latitude,
+		Longitude:           opts.Longitude,
+		Placetypes:          opts.Placetypes,
+		Geometries:          opts.Geometries,
+		AlternateGeometries: opts.AlternateGeometries,
+		IsCurrent:           opts.IsCurrent,
+		IsCeased:            opts.IsCeased,
+		IsDeprecated:        opts.IsDeprecated,
+		IsSuperseded:        opts.IsSuperseded,
+		IsSuperseding:       opts.IsSuperseding,
+		InceptionDate:       opts.InceptionDate,
+		CessationDate:       opts.CessationDate,
+		Properties:          opts.Properties,
+		Sort:                opts.Sort,
 	}
-
+	
 	req, err := request.NewPointInPolygonRequestFromFlagSet(fs)
 
 	if err != nil {
