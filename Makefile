@@ -12,4 +12,6 @@ cli:
 	go build -mod $(GOMOD) -ldflags="$(LDFLAGS)" -o bin/client cmd/client/main.go
 
 debug:
-	go run -mod $(GOMOD) -ldflags="$(LDFLAGS)" cmd/server/main.go -mode directory:// /usr/local/data/sfomuseum-data-maps/data
+	go run -mod $(GOMOD) -ldflags="$(LDFLAGS)" cmd/server/main.go \
+		-iterator-uri repo:// \
+		/usr/local/data/sfomuseum-data-maps
