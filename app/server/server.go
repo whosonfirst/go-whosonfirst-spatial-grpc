@@ -9,7 +9,7 @@ import (
 	grpc_flags "github.com/whosonfirst/go-whosonfirst-spatial-grpc/flags"
 	grpc_server "github.com/whosonfirst/go-whosonfirst-spatial-grpc/server"
 	"github.com/whosonfirst/go-whosonfirst-spatial-grpc/spatial"
-	spatial_app "github.com/whosonfirst/go-whosonfirst-spatial/app"
+	spatial_app "github.com/whosonfirst/go-whosonfirst-spatial/application"
 	spatial_flags "github.com/whosonfirst/go-whosonfirst-spatial/flags"
 	"google.golang.org/grpc"
 	"log"
