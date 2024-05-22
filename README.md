@@ -2,9 +2,9 @@
 
 gRPC support for the `go-whosonfirst-spatial` interfaces.
 
-## Important
+## Documentation
 
-Work in progress. Everything will change. Documentation to follow.
+Documentatin is incomplete.
 
 ## Tools
 
@@ -17,18 +17,16 @@ go build -mod vendor -o bin/client cmd/client/main.go
 ### client
 
 ```
-$> ./bin/client -h
+> ./bin/client -h
   -alternate-geometry value
     	One or more alternate geometry labels (wof:alt_label) values to filter results by.
-  -cessation-date string
+  -cessation string
     	A valid EDTF date string.
-  -dev-null
-    	Emit results to /dev/null
   -geometries string
     	Valid options are: all, alt, default. (default "all")
   -host string
     	The host to listen for requests on (default "localhost")
-  -inception-date string
+  -inception string
     	A valid EDTF date string.
   -is-ceased value
     	One or more existential flags (-1, 0, 1) to filter results by.
@@ -44,6 +42,8 @@ $> ./bin/client -h
     	A valid latitude.
   -longitude float
     	A valid longitude.
+  -null
+    	Emit results to /dev/null
   -placetype value
     	One or more place types to filter results by.
   -port int
@@ -92,25 +92,23 @@ $> ./bin/client -latitude 43.873889 -longitude 18.408611 -inception-date 199X | 
 ### server
 
 ```
-$> ./bin/server -h
+> ./bin/server -h
   -custom-placetypes string
     	A JSON-encoded string containing custom placetypes defined using the syntax described in the whosonfirst/go-whosonfirst-placetypes repository.
   -enable-custom-placetypes
     	Enable wof:placetype values that are not explicitly defined in the whosonfirst/go-whosonfirst-placetypes repository.
   -host string
-    	The host to listen for requests on (default "localhost")
+    	... (default "localhost")
   -is-wof
     	Input data is WOF-flavoured GeoJSON. (Pass a value of '0' or 'false' if you need to index non-WOF documents. (default true)
   -iterator-uri string
     	A valid whosonfirst/go-whosonfirst-iterate/v2 URI. Supported schemes are: directory://, featurecollection://, file://, filelist://, geojsonl://, null://, repo://. (default "repo://")
   -port int
-    	The port to listen for requests on (default 8082)
+    	... (default 8082)
   -properties-reader-uri string
     	A valid whosonfirst/go-reader.Reader URI. Available options are: [fs:// null:// repo:// stdin://]. If the value is {spatial-database-uri} then the value of the '-spatial-database-uri' implements the reader.Reader interface and will be used.
   -spatial-database-uri string
-    	A valid whosonfirst/go-whosonfirst-spatial/data.SpatialDatabase URI. options are: []
-  -verbose
-    	Be chatty.
+    	A valid whosonfirst/go-whosonfirst-spatial/data.SpatialDatabase URI. options are: [rtree://] (default "rtree://")
 ```
 
 For example:
@@ -127,7 +125,6 @@ $> ./bin/server -spatial-database-uri rtree:// /usr/local/data/whosonfirst-data-
 ## See also
 
 * https://github.com/whosonfirst/go-whosonfirst-spatial
-* https://github.com/whosonfirst/go-whosonfirst-spatial-pip
 * https://github.com/whosonfirst/go-whosonfirst-spatial-grpc-sqlite
 * https://github.com/whosonfirst/go-whosonfirst-spatial-grpc-pmtiles
 * https://github.com/whosonfirst/go-whosonfirst-spr
