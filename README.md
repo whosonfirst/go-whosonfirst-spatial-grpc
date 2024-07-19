@@ -125,7 +125,7 @@ $> ./bin/server -spatial-database-uri rtree:// /usr/local/data/whosonfirst-data-
 ## See also
 
 * https://github.com/whosonfirst/go-whosonfirst-spatial
-* https://github.com/whosonfirst/go-whosonfirst-spatial-grpc-sqlite
-* https://github.com/whosonfirst/go-whosonfirst-spatial-grpc-pmtiles
+* https://github.com/whosonfirst/go-whosonfirst-spatial-sqlite
+* https://github.com/whosonfirst/go-whosonfirst-spatial-pmtiles
 * https://github.com/whosonfirst/go-whosonfirst-spr
 * https://github.com/grpc/grpc-go
