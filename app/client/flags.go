@@ -36,8 +36,8 @@ func DefaultFlagSet() (*flag.FlagSet, error) {
 
 	fs := flagset.NewFlagSet("client")
 
-	fs.StringVar(&host, "host", "localhost", "The host to listen for requests on")
-	fs.IntVar(&port, "port", 8082, "The port to listen for requests on")
+	fs.StringVar(&host, "host", "localhost", "The host of the gRPC server to connect to.")
+	fs.IntVar(&port, "port", 8082, "The port of the gRPC server to connect to.")
 
 	fs.BoolVar(&stdout, "stdout", true, "Emit results to STDOUT")
 	fs.BoolVar(&null, "null", false, "Emit results to /dev/null")
