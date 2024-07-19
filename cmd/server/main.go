@@ -2,8 +2,9 @@ package main
 
 import (
 	"context"
-	"github.com/whosonfirst/go-whosonfirst-spatial-grpc/app/server"
 	"log"
+
+	"github.com/whosonfirst/go-whosonfirst-spatial-grpc/app/server"	
 )
 
 func main() {
