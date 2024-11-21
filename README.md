@@ -4,7 +4,7 @@ gRPC support for the `go-whosonfirst-spatial` interfaces.
 
 ## Documentation
 
-Documentatin is incomplete.
+Documentation is incomplete.
 
 ## Tools
 
@@ -59,7 +59,7 @@ $> ./bin/client -h
 For example:
 
 ```
-$> ./bin/client -latitude 43.873889 -longitude 18.408611 -inception-date 199X | jq
+$> ./bin/client -latitude 43.873889 -longitude 18.408611 -inception 199X | jq
 {
   "places": [
     {
@@ -101,8 +101,8 @@ $> ./bin/server -h
     	The host to listen for requests on (default "localhost")
   -is-wof
     	Input data is WOF-flavoured GeoJSON. (Pass a value of '0' or 'false' if you need to index non-WOF documents. (default true)
-  -iterator-uri string
-    	A valid whosonfirst/go-whosonfirst-iterate/v2 URI. Supported schemes are: directory://, featurecollection://, file://, filelist://, geojsonl://, null://, repo://. (default "repo://")
+  -iterator-uri value
+    	Zero or more URIs denoting data sources to use for indexing the spatial database at startup. URIs take the form of {ITERATOR_URI} + "#" + {PIPE-SEPARATED LIST OF ITERATOR SOURCES}. Where {ITERATOR_URI} is expected to be a registered whosonfirst/go-whosonfirst-iterate/v2 iterator (emitter) URI and {ITERATOR SOURCES} are valid input paths for that iterator. Supported whosonfirst/go-whosonfirst-iterate/v2 iterator schemes are: cwd://, directory://, featurecollection://, file://, filelist://, geojsonl://, null://, repo://.
   -port int
     	The port to listen for requests on (default 8082)
   -properties-reader-uri string
@@ -114,7 +114,7 @@ $> ./bin/server -h
 For example:
 
 ```
-$> ./bin/server -spatial-database-uri rtree:// /usr/local/data/whosonfirst-data-admin-ba/
+$> ./bin/server -spatial-database-uri 'rtree://#/usr/local/data/whosonfirst-data-admin-ba/'
 2021/03/26 08:59:36 Listening on localhost:8082
 08:59:37.890704 [server] STATUS indexing 8792 records indexed
 08:59:38.890291 [server] STATUS indexing 16249 records indexed
