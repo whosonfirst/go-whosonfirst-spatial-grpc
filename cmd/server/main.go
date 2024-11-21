@@ -4,17 +4,15 @@ import (
 	"context"
 	"log"
 
-	"github.com/whosonfirst/go-whosonfirst-spatial-grpc/app/server"	
+	"github.com/whosonfirst/go-whosonfirst-spatial-grpc/app/server"
 )
 
 func main() {
 
 	ctx := context.Background()
-	logger := log.Default()
-
-	err := server.Run(ctx, logger)
+	err := server.Run(ctx)
 
 	if err != nil {
-		logger.Fatalf("Failed to run client, %v", err)
+		log.Fatalf("Failed to run client, %v", err)
 	}
 }

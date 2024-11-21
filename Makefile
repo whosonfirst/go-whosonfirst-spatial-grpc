@@ -13,5 +13,4 @@ cli:
 
 debug:
 	go run -mod $(GOMOD) -ldflags="$(LDFLAGS)" cmd/server/main.go \
-		-iterator-uri repo:// \
-		/usr/local/data/sfomuseum-data-maps
+		-iterator-uri 'repo://?strict=false#/$(REPO)'
