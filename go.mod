@@ -7,8 +7,7 @@ require (
 	github.com/sfomuseum/go-flags v0.10.0
 	github.com/whosonfirst/go-reader v1.0.2
 	github.com/whosonfirst/go-whosonfirst-flags v0.5.2
-	github.com/whosonfirst/go-whosonfirst-iterate/v2 v2.5.0
-	github.com/whosonfirst/go-whosonfirst-spatial v0.10.2
+	github.com/whosonfirst/go-whosonfirst-spatial v0.11.0
 	github.com/whosonfirst/go-whosonfirst-spr/v2 v2.3.7
 	google.golang.org/grpc v1.68.0
 	google.golang.org/protobuf v1.35.2
@@ -35,12 +34,12 @@ require (
 	github.com/whosonfirst/go-sanitize v0.1.0 // indirect
 	github.com/whosonfirst/go-whosonfirst-crawl v0.2.2 // indirect
 	github.com/whosonfirst/go-whosonfirst-feature v0.0.28 // indirect
+	github.com/whosonfirst/go-whosonfirst-iterate/v2 v2.5.0 // indirect
 	github.com/whosonfirst/go-whosonfirst-placetypes v0.7.3 // indirect
 	github.com/whosonfirst/go-whosonfirst-sources v0.1.0 // indirect
 	github.com/whosonfirst/go-whosonfirst-uri v1.3.0 // indirect
 	github.com/whosonfirst/go-writer/v3 v3.1.1 // indirect
 	github.com/whosonfirst/walk v0.0.2 // indirect
-	github.com/whosonfirst/warning v0.1.1 // indirect
 	go.mongodb.org/mongo-driver v1.11.4 // indirect
 	golang.org/x/net v0.29.0 // indirect
 	golang.org/x/sys v0.25.0 // indirect
