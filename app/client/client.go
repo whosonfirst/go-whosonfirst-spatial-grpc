@@ -8,9 +8,11 @@ import (
 	"io"
 	"os"
 
+	"github.com/paulmach/orb"
+	"github.com/paulmach/orb/geojson"		
 	"github.com/whosonfirst/go-whosonfirst-spatial-grpc/request"
 	"github.com/whosonfirst/go-whosonfirst-spatial-grpc/spatial"
-	"github.com/whosonfirst/go-whosonfirst-spatial/pip"
+	"github.com/whosonfirst/go-whosonfirst-spatial/query"
 	"google.golang.org/grpc"
 )
 
@@ -38,9 +40,11 @@ func RunWithFlagSet(ctx context.Context, fs *flag.FlagSet) error {
 
 func RunWithOptions(ctx context.Context, opts *RunOptions) error {
 
-	pip_req := &pip.PointInPolygonRequest{
-		Latitude:            opts.Latitude,
-		Longitude:           opts.Longitude,
+	pip_pt := orb.Point([2]float64{opts.Longitude, opts.Latitude})
+	pip_geom := geojson.NewGeometry(pip_pt)
+	
+	pip_req := &query.SpatialQuery{
+		Geometry: pip_geom,
 		Placetypes:          opts.Placetypes,
 		Geometries:          opts.Geometries,
 		AlternateGeometries: opts.AlternateGeometries,

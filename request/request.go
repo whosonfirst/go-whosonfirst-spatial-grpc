@@ -1,11 +1,13 @@
 package request
 
 import (
+	"github.com/paulmach/orb"
+	"github.com/paulmach/orb/geojson"	
 	"github.com/whosonfirst/go-whosonfirst-spatial-grpc/spatial"
-	"github.com/whosonfirst/go-whosonfirst-spatial/pip"
+	"github.com/whosonfirst/go-whosonfirst-spatial/query"
 )
 
-func PIPRequestFromSpatialRequest(spatial_req *spatial.PointInPolygonRequest) *pip.PointInPolygonRequest {
+func PIPRequestFromSpatialRequest(spatial_req *spatial.PointInPolygonRequest) *query.SpatialQuery {
 
 	asInt64 := func(fl []spatial.ExistentialFlag) []int64 {
 
@@ -26,9 +28,11 @@ func PIPRequestFromSpatialRequest(spatial_req *spatial.PointInPolygonRequest) *p
 		return j
 	}
 
-	pip_req := &pip.PointInPolygonRequest{
-		Latitude:            float64(spatial_req.Latitude),
-		Longitude:           float64(spatial_req.Longitude),
+	pip_pt := orb.Point([2]float64{spatial_req.Longitude, spatial_req.Latitude})
+	pip_geom := geojson.NewGeometry(pip_pt)
+	
+	pip_req := &query.SpatialQuery{
+		Geometry: pip_geom,
 		Placetypes:          spatial_req.Placetypes,
 		Geometries:          spatial_req.Geometries,
 		AlternateGeometries: spatial_req.AlternateGeometries,

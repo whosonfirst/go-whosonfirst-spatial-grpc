@@ -8,7 +8,7 @@ import (
 	"github.com/whosonfirst/go-whosonfirst-spatial-grpc/request"
 	"github.com/whosonfirst/go-whosonfirst-spatial-grpc/spatial"
 	app "github.com/whosonfirst/go-whosonfirst-spatial/application"
-	"github.com/whosonfirst/go-whosonfirst-spatial/pip"
+	"github.com/whosonfirst/go-whosonfirst-spatial/query"
 	"github.com/whosonfirst/go-whosonfirst-spr/v2"
 )
 
