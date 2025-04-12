@@ -17,6 +17,12 @@ enum ExistentialFlag {
      UNKNOWN = -1;     
 }
 
+message Tile {
+	uint32 zoom = 1;
+	uint32 x = 2;
+	uint32 y = 3;
+}
+
 // https://github.com/whosonfirst/go-whosonfirst-spatial-pip/blob/main/pip.go
 
 message PointInPolygonRequest {
@@ -34,6 +40,22 @@ message PointInPolygonRequest {
 	string cessation_date = 12;
 	repeated string sort = 13;
 	repeated string properties = 14;	
+}
+
+message PointInPolygonWithTileRequest {
+	Tile tile = 1;
+	repeated string placetypes = 2;
+	string geometries = 3;
+	repeated string alternate_geometries = 4;
+	repeated ExistentialFlag is_current = 5;
+	repeated ExistentialFlag is_ceased = 6;
+	repeated ExistentialFlag is_deprecated = 7;
+	repeated ExistentialFlag is_superseding = 8;
+	repeated ExistentialFlag is_superseded = 9;
+	string inception_date = 10;
+	string cessation_date = 11;
+	repeated string sort = 12;
+	repeated string properties = 13;	
 }
 
 // https://github.com/whosonfirst/go-whosonfirst-spr/blob/main/spr.go
