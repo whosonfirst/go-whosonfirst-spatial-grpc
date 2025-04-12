@@ -5,12 +5,12 @@ go 1.23
 require (
 	github.com/paulmach/orb v0.11.1
 	github.com/sfomuseum/go-flags v0.10.0
-	github.com/whosonfirst/go-reader v1.0.2
+	github.com/whosonfirst/go-reader v1.1.0
 	github.com/whosonfirst/go-whosonfirst-flags v0.5.2
-	github.com/whosonfirst/go-whosonfirst-spatial v0.13.0
+	github.com/whosonfirst/go-whosonfirst-spatial v0.16.1
 	github.com/whosonfirst/go-whosonfirst-spr/v2 v2.3.7
-	google.golang.org/grpc v1.71.0
-	google.golang.org/protobuf v1.36.5
+	google.golang.org/grpc v1.71.1
+	google.golang.org/protobuf v1.36.6
 )
 
 require (
