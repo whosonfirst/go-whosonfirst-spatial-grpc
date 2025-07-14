@@ -5,7 +5,7 @@ go 1.24
 require (
 	github.com/paulmach/orb v0.11.1
 	github.com/sfomuseum/go-flags v0.10.0
-	github.com/whosonfirst/go-reader v1.1.0
+	github.com/whosonfirst/go-reader/v2 v2.0.0
 	github.com/whosonfirst/go-whosonfirst-flags v0.5.2
 	github.com/whosonfirst/go-whosonfirst-iterate/v3 v3.1.0
 	github.com/whosonfirst/go-whosonfirst-spatial v0.16.3
@@ -33,6 +33,7 @@ require (
 	github.com/tidwall/pretty v1.2.0 // indirect
 	github.com/tidwall/sjson v1.2.5 // indirect
 	github.com/whosonfirst/go-ioutil v1.0.2 // indirect
+	github.com/whosonfirst/go-reader v1.1.0 // indirect
 	github.com/whosonfirst/go-sanitize v0.1.0 // indirect
 	github.com/whosonfirst/go-whosonfirst-feature v0.0.28 // indirect
 	github.com/whosonfirst/go-whosonfirst-placetypes v0.7.3 // indirect
